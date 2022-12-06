@@ -1,13 +1,13 @@
 const allure = require("allure-commandline");
+import fs from "fs";
 
-export const config = {
+exports.config = {
   //
   // ====================
   // Runner Configuration
   // ====================
-  // WebdriverIO supports running e2e tests as well as unit and component tests.
   runner: "local",
-
+  //
   //
   // ==================
   // Specify Test Files
@@ -24,7 +24,7 @@ export const config = {
   // then the current working directory is where your `package.json` resides, so `wdio`
   // will be called from there.
   //
-  specs: ["./test/specs/**/*.js"],
+  specs: ["./test/specs/**/contact-us.spec.js"],
   // Patterns to exclude.
   exclude: [
     // 'path/to/excluded/files'
@@ -146,14 +146,13 @@ export const config = {
       }
     ]
   ],
-
   //
   // Options to be passed to Mocha.
   // See the full list at http://mochajs.org/
   mochaOpts: {
     ui: "bdd",
-    timeout: 60000
-  }
+    timeout: 600000
+  },
   //
   // =====
   // Hooks
@@ -167,8 +166,11 @@ export const config = {
    * @param {Object} config wdio configuration object
    * @param {Array.<Object>} capabilities list of capabilities details
    */
-  // onPrepare: function (config, capabilities) {
-  // },
+  onPrepare: function (config, capabilities) {
+    if (fs.existsSync("./allure-results")) {
+      fs.rmSync("./allure-results", { recursive: true });
+    }
+  },
   /**
    * Gets executed before a worker process is spawned and can be used to initialise specific service
    * for that worker as well as modify runtime environments in an async fashion.
@@ -206,8 +208,9 @@ export const config = {
    * @param {Array.<String>} specs        List of spec file paths that are to be run
    * @param {Object}         browser      instance of created browser/device session
    */
-  // before: function (capabilities, specs) {
-  // },
+  before: function (capabilities, specs) {
+    require("expect-webdriverio").setOptions({ wait: 10000, interval: 500 });
+  },
   /**
    * Runs before a WebdriverIO command gets executed.
    * @param {String} commandName hook command name
@@ -248,11 +251,15 @@ export const config = {
    * @param {Boolean} result.passed    true if test has passed, otherwise false
    * @param {Object}  result.retries   informations to spec related retries, e.g. `{ attempts: 0, limit: 0 }`
    */
-  // afterTest: function(test, context, { error, result, duration, passed, retries }) {
-  //   if(error) {
-  //       await browser.takeScreenshot();
-  //   }
-  // },
+  afterTest: async function (
+    test,
+    context,
+    { error, result, duration, passed, retries }
+  ) {
+    if (error) {
+      await browser.takeScreenshot();
+    }
+  },
 
   /**
    * Hook that gets executed after the suite has ended
@@ -294,26 +301,24 @@ export const config = {
    * @param {Array.<Object>} capabilities list of capabilities details
    * @param {<Object>} results object containing test results
    */
-  // onComplete: function(exitCode, config, capabilities, results) {
-  //   const reportError = new Error('Could not generate Allure report')
-  //   const generation = allure(['generate', 'allure-results', '--clean'])
-  //   return new Promise((resolve, reject) => {
-  //       const generationTimeout = setTimeout(
-  //           () => reject(reportError),
-  //           5000)
+  onComplete: function (exitCode, config, capabilities, results) {
+    const reportError = new Error("Could not generate Allure report");
+    const generation = allure(["generate", "allure-results", "--clean"]);
+    return new Promise((resolve, reject) => {
+      const generationTimeout = setTimeout(() => reject(reportError), 10000);
 
-  //       generation.on('exit', function(exitCode) {
-  //           clearTimeout(generationTimeout)
+      generation.on("exit", function (exitCode) {
+        clearTimeout(generationTimeout);
 
-  //           if (exitCode !== 0) {
-  //               return reject(reportError)
-  //           }
+        if (exitCode !== 0) {
+          return reject(reportError);
+        }
 
-  //           console.log('Allure report successfully generated')
-  //           resolve()
-  //       })
-  //   })
-  // },
+        console.log("Allure report successfully generated");
+        resolve();
+      });
+    });
+  }
   /**
    * Gets executed when a refresh happens.
    * @param {String} oldSessionId session ID of the old session
