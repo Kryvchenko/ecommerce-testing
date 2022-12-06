@@ -20,5 +20,8 @@
         "@wdio/spec-reporter": "^8.0.7",
         "chromedriver": "^108.0.0",
         "wdio-chromedriver-service": "^8.0.1"
+    },
+    "dependencies": {
+        "allure-commandline": "^2.20.1"
     }
 }
