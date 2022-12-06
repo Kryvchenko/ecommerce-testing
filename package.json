@@ -1,0 +1,24 @@
+{
+    "name": "bootcamp-vol-2.0",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "wdio": "wdio run wdio.conf.js"
+    },
+    "keywords": [],
+    "author": "Kryo",
+    "license": "ISC",
+    "devDependencies": {
+        "@babel/core": "^7.20.5",
+        "@babel/preset-env": "^7.20.2",
+        "@babel/register": "^7.18.9",
+        "@wdio/allure-reporter": "^8.0.7",
+        "@wdio/cli": "^8.0.7",
+        "@wdio/local-runner": "^8.0.7",
+        "@wdio/mocha-framework": "^8.0.7",
+        "@wdio/spec-reporter": "^8.0.7",
+        "chromedriver": "^108.0.0",
+        "wdio-chromedriver-service": "^8.0.1"
+    }
+}
