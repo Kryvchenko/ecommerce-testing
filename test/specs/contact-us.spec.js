@@ -1,3 +1,5 @@
+import allureReporter from "@wdio/allure-reporter";
+
 describe("webdriveruniversity - contact us page", () => {
   beforeEach(async () => {
     await browser.maximizeWindow();
@@ -6,6 +8,11 @@ describe("webdriveruniversity - contact us page", () => {
   });
 
   it("valid submission - submit all information", async () => {
+    allureReporter.addFeature("Contact us Page - valid Submission");
+    allureReporter.addDescription(
+      "Validate contact us page by submitting all data"
+    );
+    allureReporter.addSeverity("critical");
     const firstName = await $('//*[@name="first_name"]');
     const lastName = await $('//*[@name="last_name"]');
     const emailAddress = await $('//*[@name="email"]');
@@ -35,6 +42,12 @@ describe("webdriveruniversity - contact us page", () => {
   });
 
   it("invalid submission - dont submit all information", async () => {
+    allureReporter.addFeature("Contact us Page - invalid Submission");
+    allureReporter.addDescription(
+      "Validate contact us page by not submitting all data"
+    );
+    allureReporter.addSeverity("normal");
+
     const firstName = await $('//*[@name="first_name"]');
     await firstName.setValue("Sarah");
 
