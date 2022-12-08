@@ -1,10 +1,11 @@
 // import allureReporter from "@wdio/allure-reporter";
+import ContactUsPage from "../pom/webdriver-university/contact-us.page";
 
 //to use this.retries you have function keyword for describe block, because arrow function this is equal to outer scope
 describe("webdriveruniversity - contact us page", function () {
   //this.retries(1); //Retries all tests in suite 1 time
   beforeEach(async () => {
-    await browser.url("/Contact-Us/contactus.html");
+    await ContactUsPage.open();
     console.log(`>>Browser Object: ${JSON.stringify(browser)}`);
   });
 
@@ -14,27 +15,17 @@ describe("webdriveruniversity - contact us page", function () {
     //   "Validate contact us page by submitting all data"
     // );
     // allureReporter.addSeverity("critical");
-    const firstName = await $('//*[@name="first_name"]');
-    const lastName = await $('//*[@name="last_name"]');
-    const emailAddress = await $('//*[@name="email"]');
-    const message = await $('//*[@name="message"]');
-    const submitButton = await $('//input[@value="SUBMIT"]');
 
-    await firstName.setValue("Joe");
-    await lastName.setValue("Blogs");
-    await emailAddress.setValue("joe_blogs123@mail.com");
-    await message.setValue("Hello how are you?");
-
-    //await browser.debug();
-    // await submitButton.click();
-    await browser.waitThenClick(submitButton);
-
-    const successfulSubmissionHeader = $("#contact_reply > h1");
-    console.log(
-      `successfulSubmissionHeader Element: ` +
-        JSON.stringify(await successfulSubmissionHeader)
+    await ContactUsPage.submitForm(
+      "Joe",
+      "Blogs",
+      "joe_blogs123@mail.com",
+      "Hello how are you?"
     );
-    await expect(successfulSubmissionHeader).toHaveText(
+
+    //await browser.debug();  //use it to debug your code after specific line in the code
+
+    await expect(ContactUsPage.successfulSubmissionHeader).toHaveText(
       "Thank You for your Message!"
     );
 
@@ -44,26 +35,10 @@ describe("webdriveruniversity - contact us page", function () {
   });
 
   it("invalid submission - dont submit all information", async () => {
-    // allureReporter.addFeature("Contact us Page - invalid Submission");
-    // allureReporter.addDescription(
-    //   "Validate contact us page by not submitting all data"
-    // );
-    // allureReporter.addSeverity("normal");
-
-    const firstName = await $('//*[@name="first_name"]');
-    await firstName.setValue("Sarah");
-
-    const lastName = await $('//*[@name="last_name"]');
-    await lastName.setValue("Blogs");
-
-    const message = await $('//*[@name="message"]');
-    await message.setValue("Hello world!");
-
-    const submitButton = await $('//input[@value="SUBMIT"]');
-    await submitButton.click();
-
-    const successfulSubmissionHeader = $("body");
-    await expect(successfulSubmissionHeader).toHaveTextContaining([
+    await ContactUsPage.submitForm("Sarah", "Blogs", "", "Hello world!");
+    await expect(
+      ContactUsPage.unSuccessfulSubmissionHeader
+    ).toHaveTextContaining([
       "Error: all fields are required",
       "Error: Invalid email address"
     ]);
