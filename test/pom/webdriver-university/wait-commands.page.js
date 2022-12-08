@@ -1,6 +1,4 @@
-import BasePage from "./base.page";
-
-class WaitCommandsPage extends BasePage {
+class WaitCommandsPage {
   get clickMe_Button() {
     return $("//*[text()='CLICK ME!']/..");
   }
@@ -12,7 +10,7 @@ class WaitCommandsPage extends BasePage {
   }
 
   open() {
-    return super.open("Ajax-Loader/index.html");
+    return browser.url("/Ajax-Loader/index.html");
   }
   async clickMe() {
     await browser.waitThenClick(this.clickMe_Button);

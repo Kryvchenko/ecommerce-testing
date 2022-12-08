@@ -1,5 +1,5 @@
 // import allureReporter from "@wdio/allure-reporter";
-import ContactUsPage from "../pom/webdriver-university/contact-us.page";
+import ContactUsPage from "../../pom/webdriver-university/contact-us.page";
 
 //to use this.retries you have function keyword for describe block, because arrow function this is equal to outer scope
 describe("webdriveruniversity - contact us page", function () {

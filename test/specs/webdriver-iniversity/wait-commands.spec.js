@@ -1,4 +1,4 @@
-import waitCommandsPage from "../pom/webdriver-university/wait-commands.page";
+import waitCommandsPage from "../../pom/webdriver-university/wait-commands.page";
 
 // this test was created to show a different wait methods available in Wbdriver I/O
 // Than's why assertions wasn't implemented

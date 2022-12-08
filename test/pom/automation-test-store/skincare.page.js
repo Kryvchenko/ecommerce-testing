@@ -1,12 +1,12 @@
-describe("Add items to the basket", () => {
-  it("add specific 'skincare products' to the basket & validate cart total", async () => {
-    await browser.url("https://automationteststore.com/");
-    const skincareLinks = await $$("//a[contains(text(), 'Skincare')]");
-    await skincareLinks[1].click();
+import BasePage from "./base.page";
+import ItemComponent from "./components/item.comp";
 
-    const skincareProducts_Header_Links = await $$(
-      ".fixed_wrapper .prdocutname"
-    );
+class SkincarePage extends BasePage {
+  get itemComponent() {
+    return ItemComponent;
+  }
+  async addSpecificItems_ValidateTotal(item1, item2) {
+    const skincareProducts_Header_Links = await ItemComponent.itemHeaderLinks;
     const itemPrices = [];
     let itemsTotal;
 
@@ -14,19 +14,12 @@ describe("Add items to the basket", () => {
       const tempHeaderText = await header.getText();
 
       if (
-        tempHeaderText.toLowerCase() === "creme precieuse nuit 50ml" ||
-        tempHeaderText.toLowerCase() === "total moisture facial cream"
+        tempHeaderText.toLowerCase() === item1.toLowerCase() ||
+        tempHeaderText.toLowerCase() === item2.toLowerCase()
       ) {
         const attr = await header.getAttribute("href");
-        console.log(attr);
-        // https://automationteststore.com/index.php?rt=product/product&path=43&product_id=66
-        // https://automationteststore.com/index.php?rt=product/product&path=43&product_id=93
-
         const itemId = attr.split("id=").pop();
         await $(`//a[@data-id='${itemId}']`).click();
-
-        // //a[@data-id='93']/following-sibling::div/div[@class='pricenew'] | //a[@data-id='66']/following-sibling::div/div[@class='oneprice']
-
         itemPrices.push(
           await $(
             `//a[@data-id='${itemId}']/following-sibling::div/div[@class='pricenew'] | //a[@data-id='${itemId}']/following-sibling::div/div[@class='oneprice']`
@@ -58,6 +51,7 @@ describe("Add items to the basket", () => {
     ).getText();
     cartTotal = cartTotal.replace("$", "");
     await expect(itemsTotal).toEqual(parseFloat(cartTotal));
-    await browser.pause(5000);
-  });
-});
+  }
+}
+
+export default new SkincarePage();

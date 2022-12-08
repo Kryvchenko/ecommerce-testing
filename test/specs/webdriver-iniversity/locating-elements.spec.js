@@ -1,5 +1,5 @@
-import locatingElementsPage from "../pom/webdriver-university/locating-elements.page";
-import constants from "../../data/constants";
+import locatingElementsPage from "../../pom/webdriver-university/locating-elements.page";
+import constants from "../../../data/constants";
 
 describe("locating elements", () => {
   beforeEach(async () => {
