@@ -1,5 +1,6 @@
 const allure = require("allure-commandline");
 const fs = require("fs");
+const commands = require("./utils/commands");
 
 exports.config = {
   //
@@ -216,8 +217,11 @@ exports.config = {
    * @param {String} commandName hook command name
    * @param {Array} args arguments that command would receive
    */
-  // beforeCommand: function (commandName, args) {
-  // },
+  beforeCommand: function (commandName, args) {
+    Object.keys(commands).map((key) => {
+      browser.addCommand(key, commands[key]);
+    });
+  },
   /**
    * Hook that gets executed before the suite starts
    * @param {Object} suite suite details

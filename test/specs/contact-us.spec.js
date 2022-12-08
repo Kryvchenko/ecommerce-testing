@@ -1,6 +1,8 @@
 // import allureReporter from "@wdio/allure-reporter";
 
-describe("webdriveruniversity - contact us page", () => {
+//to use this.retries you have function keyword for describe block, because arrow function this is equal to outer scope
+describe("webdriveruniversity - contact us page", function () {
+  //this.retries(1); //Retries all tests in suite 1 time
   beforeEach(async () => {
     await browser.url("/Contact-Us/contactus.html");
     console.log(`>>Browser Object: ${JSON.stringify(browser)}`);
@@ -24,7 +26,8 @@ describe("webdriveruniversity - contact us page", () => {
     await message.setValue("Hello how are you?");
 
     //await browser.debug();
-    await submitButton.click();
+    // await submitButton.click();
+    await browser.waitThenClick(submitButton);
 
     const successfulSubmissionHeader = $("#contact_reply > h1");
     console.log(
