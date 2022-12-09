@@ -1,7 +1,6 @@
 class HeaderComponent {
-  get headerLinks() {
-    return $$(".fixed_wrapper .prdocutname");
+  headerLinks(linkText) {
+    return $(`//span[text()='${linkText}']`);
   }
 }
-
 export default new HeaderComponent();
