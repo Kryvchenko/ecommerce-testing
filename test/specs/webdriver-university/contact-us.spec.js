@@ -9,19 +9,14 @@ describe("webdriveruniversity - contact us page", function () {
     console.log(`>>Browser Object: ${JSON.stringify(browser)}`);
   });
 
-  it("valid submission - submit all information", async () => {
+  it.only("valid submission - submit all information", async () => {
     //allureReporter.addFeature("Contact us Page - valid Submission");
     // allureReporter.addDescription(
     //   "Validate contact us page by submitting all data"
     // );
     // allureReporter.addSeverity("critical");
 
-    await ContactUsPage.submitForm(
-      "Joe",
-      "Blogs",
-      "joe_blogs123@mail.com",
-      "Hello how are you?"
-    );
+    await ContactUsPage.submitForm_UsingRandomData("Joe", "Blogs");
 
     //await browser.debug();  //use it to debug your code after specific line in the code
 

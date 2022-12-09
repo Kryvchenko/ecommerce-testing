@@ -111,7 +111,7 @@ describe("advanced element interactions - examples", () => {
     console.log(`>>Parent Window Title: ${parentWindow_Title}`);
     await expect(browser).toHaveUrlContaining("webdriveruniversity.com");
 
-    await $("#contact-us").click();
+    await $("#contact-us > div > div > h1").click();
     await browser.switchWindow("automationteststore");
     await browser.closeWindow();
 
