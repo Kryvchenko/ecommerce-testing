@@ -1,0 +1,6 @@
+{
+    "plugins": ["ui-testing"],
+    "rules": {
+        "const": true
+    }
+}
