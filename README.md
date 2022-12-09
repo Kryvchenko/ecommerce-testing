@@ -32,7 +32,7 @@
 - choose version `NodeJs 18.10.0`
 - to the name field add `18.10.0`
 
-![alt text](./assets/node-setup.png)
+![alt text](./data/node-setup.png)
 
 ## Running job in Jenkins locally
 
